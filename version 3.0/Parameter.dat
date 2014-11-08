@@ -1,0 +1,32 @@
+# **PARAMETER FILE**
+
+# Initial Condition
+scenerio=4		#0=vaccum
+				#1=centred sphere
+				#2=off-centred sphere
+				#3=uniform density
+				#4=sinusoidal density
+				#5=poly6 density
+				#6=gaussian density
+				
+# Coordinate
+coordinate=0	#0=cartesian coordinate
+				#1=nonuniformly scaled cartesian coordinate
+
+# Test
+test=3			#0=no test
+				#1=indexing test
+				#2=boundary value test
+				#3=accuracy test
+				#4=stencil test
+				#5=performance test
+				
+# Number of cells
+inc = 20
+jnc = 20
+knc = 20
+				
+# Number of processors
+inp=1
+jnp=1
+knp=4
