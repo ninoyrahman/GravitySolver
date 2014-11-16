@@ -1,0 +1,39 @@
+# **PARAMETER FILE**
+
+# Size of domain
+domainsize=2.0 
+
+# Initial Condition
+scenerio=9		#0=vaccum
+				#1=centred sphere
+				#2=off-centred gaussian
+				#3=uniform density
+				#4=sinusoidal density
+				#5=poly6 density
+				#6=gaussian density
+				#7=centrally condensed sphere
+				#8=off-centred condensed
+				#9=ploytrop n=1
+				#10=ploytrop n=5
+				
+# Coordinate
+coordinate=0	#0=cartesian coordinate
+				#1=nonuniformly scaled cartesian coordinate
+
+# Test
+test=3			#0=no test
+				#1=indexing test
+				#2=boundary value test
+				#3=accuracy test
+				#4=performance test
+				#5=solver convergence test
+				
+# Number of cells
+inc = 40
+jnc = 40
+knc = 40
+				
+# Number of processors
+inp=2
+jnp=2
+knp=2

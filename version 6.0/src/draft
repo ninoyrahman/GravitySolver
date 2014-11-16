@@ -1,0 +1,81 @@
+ !****************************************************************  
+ ! ComputeMatrix.f90
+ ! 
+ ! Created on: Jul 26, 2014
+ ! Author: ninoy
+ !***************************************************************** 
+
+SUBROUTINE ComputeMatrix
+#include <finclude/petscdef.h>
+    use petscksp
+    use MD_Definition
+    use MD_Parameter
+    use MD_Quantity
+    use MD_PETScQuantity
+    use MD_Helper
+    implicit none
+
+    PetscErrorCode ierr
+    PetscInt i,j,k
+    PetscInt nghi,nghj,nghk
+    PetscInt row,lrow,column,low,high
+    PetscScalar, dimension(:,:), allocatable :: aa
+    PetscInt, dimension(:,:), allocatable :: icolumn
+
+    if(.not. allocated(aa)) allocate(aa(0:ilnc*jlnc*klnc-1,0:61))
+    if(.not. allocated(icolumn)) allocate(icolumn(0:ilnc*jlnc*klnc-1,0:61))
+
+    if(rank .eq. master) then
+        print *, ''
+        print *, '***************************'
+        print *, 'Calculating System Matrix'
+        print *, '***************************'
+        print *, ''
+    end if
+
+    call MatCreate(cart_comm,A,ierr)
+    call MatSetSizes(A,ilnc*jlnc*klnc,ilnc*jlnc*klnc,inc*jnc*knc,inc*jnc*knc,ierr)
+    call MatSetType(A,MATMPIAIJ,ierr)
+    call MatMPIAIJSetPreallocation(A,50,PETSC_NULL_INTEGER,50,PETSC_NULL_INTEGER,ierr)
+    call MatSetUp(A,ierr)
+
+    ! looping over inner cell
+    do k = kmin, kmax
+        do j = jmin, jmax
+            do i = imin, imax
+
+                row = GetIndex(i,j,k)
+                lrow = GetLocalIndex(i,j,k)
+                column = 0
+
+                ! looping over inner cell in stencil
+                do nghk = -swidth, +swidth
+                    do nghj = -swidth, +swidth
+                        do nghi = -swidth, +swidth
+
+                            if(IsBoundary(i+nghi,j+nghj,k+nghk) .eq. 0 .and. S(lrow,nghi,nghj,nghk) .ne. 0.0_rp) then
+
+                                icolumn(lrow,column) = GetIndex(i+nghi,j+nghj,k+nghk)
+                                aa(lrow,column) = S(lrow,nghi,nghj,nghk)!*576.0_rp/h
+                                column = column + 1
+
+                            end if
+                        end do
+                    end do
+                end do
+
+                call MatSetValues(A,1,row,column,icolumn(lrow,:),aa(lrow,:),INSERT_VALUES,ierr)
+
+            end do
+        end do
+    end do
+
+    call MatAssemblyBegin(A, MAT_FINAL_ASSEMBLY, ierr)
+    call MatAssemblyEnd(A, MAT_FINAL_ASSEMBLY, ierr)
+
+    if(allocated(aa)) deallocate(aa)
+    if(allocated(icolumn)) deallocate(icolumn)
+
+!    call MatView(A, PETSC_VIEWER_MATLAB_WORLD, ierr)
+
+END SUBROUTINE ComputeMatrix
