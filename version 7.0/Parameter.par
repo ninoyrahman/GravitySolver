@@ -1,0 +1,42 @@
+# **PARAMETER FILE**
+# Size of domain
+domainsize=2.0
+ 
+# Initial Condition
+scenerio=9	#0=vaccum
+			#1=uniform density
+			#2=centered uniform sphere 
+			#3=sinusoidal density
+			#4=polynomial-6 density
+			#5=gaussian sphere
+			#6=off-centred gaussian sphere	
+			#7=condensed sphere
+			#8=off-centered condensed sphere
+			#9=ploytropic sphere n=1
+			#10=ploytropic sphere n=5
+
+# Coordinate
+coordinate=0	#0=cartesian coordinate
+				#1=nonuniformly scaled cartesian coordinate
+
+# Stencil type
+stenciltype=1	#0=Colella 2nd-order
+				#1=Colella 4th-order
+
+# Test
+test=3		#0=no test
+			#1=indexing test
+			#2=boundary value test
+			#3=accuracy test
+			#4=performance test
+			#5=solver convergence test
+
+# Number of cells
+inc = 40
+jnc = 40
+knc = 40
+				
+# Number of processors
+inp=2
+jnp=2
+knp=2
