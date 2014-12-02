@@ -15,6 +15,8 @@ subroutine RunTest
         call Test_BoundaryValue
     else if(test .eq. 3) then
         call Test_Accuracy
+    else if(test .eq. 4) then
+        call Test_SolverConvergence
     else
         print *, 'Wrong Test Number!'
     end if

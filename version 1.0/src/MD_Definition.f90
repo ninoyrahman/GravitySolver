@@ -12,8 +12,9 @@ MODULE MD_Definition
     SAVE
 
     integer, parameter :: double = kind(1.d0)
-    real(KIND=double), parameter :: G = 1.0
-    real(KIND=double), parameter :: pi = 3.1415927
+    integer, parameter :: rp = kind(1.d0)
+    real(KIND=double), parameter :: G = 1.0_rp
+    real(KIND=double), parameter :: pi = acos(-1.d0)
 
 CONTAINS
 

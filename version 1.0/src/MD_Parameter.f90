@@ -15,15 +15,15 @@ MODULE MD_Parameter
     !********************************************
 
     ! inner cell number
-    integer, parameter :: inc = 20
-    integer, parameter :: jnc = 20
-    integer, parameter :: knc = 20
+    integer, parameter :: inc = 80
+    integer, parameter :: jnc = 80
+    integer, parameter :: knc = 80
 
     ! ghost cell number
-    integer, parameter :: ngh = 2
+    integer, parameter :: ngh = 4
 
     ! grid size
-    real(KIND=double), parameter :: h = 2.0/inc
+    real(KIND=double), parameter :: h = 2.0_rp/dble(inc)
 
     ! starting and ending index
     integer, parameter :: imin = ngh
@@ -44,6 +44,7 @@ MODULE MD_Parameter
     integer :: coordinate = 0
     integer :: scenerio = 1
     real(kind=double) :: M
+    real(kind=double) :: R
     real(kind=double) :: xc(0:2)
 
 

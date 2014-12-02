@@ -1,0 +1,24 @@
+# **PARAMETER FILE**
+# Initial Condition
+scenerio=10	#0=vaccum
+			#1=uniform centered sphere
+			#2=off-centred gaussian sphere	 
+			#3=uniform density
+			#4=sinusoidal density
+			#5=polynomial-6 density
+			#6=gaussian sphere
+			#7=ploytropic sphere n=1
+			#8=ploytropic sphere n=5
+			#9=condensed sphere
+			#10=off centered condensed sphere
+
+# Coordinate
+coordinate=0	#0=cartesian coordinate
+				#1=nonuniformly scaled cartesian coordinate
+
+# Test
+test=3		#0=no test
+			#1=indexing test
+			#2=boundary value test
+			#3=accuracy test
+			#4=solver convergence test

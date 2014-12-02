@@ -7,7 +7,6 @@
 
 MODULE MD_IO
     USE MD_Parameter
-    USE MD_CordinateTransform
     USE MD_Quantity
     IMPLICIT NONE
 
@@ -44,7 +43,7 @@ CONTAINS
             stop
         ENDIF
 
-        OPEN(unit=unit,file='Parameter.dat',status='old')
+        OPEN(unit=unit,file='Parameter.par',status='old')
 
 10      format(A)
 
@@ -147,10 +146,9 @@ n=0
 
    subroutine ViewInfo
        use MD_Parameter
-       use MD_CordinateTransform
        implicit none
 
-       real(kind=double), dimension(0:2) :: x
+!       real(kind=double), dimension(0:2) :: xcord
        character(len=100) :: format
        integer :: nghi,nghj,nghk
 
@@ -172,13 +170,13 @@ n=0
        write (1,format) 'resolution=',inc,jnc,knc
 
        format = "(A6, F10.3, F10.3, F10.3)"
-       call GetCordinate(imin,jmin,kmin,x)
-       write (*,format) 'xmin=',x(0),x(1),x(2)
-       write (1,format) 'xmin=',x(0),x(1),x(2)
+!       call GetCordinate(imin,jmin,kmin,xcord)
+       write (*,format) 'xmin=',x(imin),y(jmin),z(kmin)
+       write (1,format) 'xmin=',x(imin),y(jmin),z(kmin)
 
-       call GetCordinate(imax,jmax,kmax,x)
-       write (*,format) 'xmax=',x(0),x(1),x(2)
-       write (1,format) 'xmax=',x(0),x(1),x(2)
+!       call GetCordinate(imax,jmax,kmax,xcord)
+       write (*,format) 'xmax=',x(imax),y(jmax),z(kmax)
+       write (1,format) 'xmax=',x(imax),y(jmax),z(kmax)
        write(1,*) ''
 
 
@@ -194,7 +192,7 @@ n=0
 
        end if
 
-       format = "(A10, F10.3)"
+       format = "(A10, E10.3)"
        write (*,format), 'mass, M =', M
        write (1,format), 'mass, M =', M
 
@@ -209,15 +207,15 @@ n=0
        print *, '********'
        print *, ''
 
-       format = "(F10.3)"
+       format = "(F14.7)"
 
 
        write(1,*) 'stencil'
        do nghi = -swidth, +swidth
            do nghj = -swidth, +swidth
                do nghk = -swidth, +swidth
-                   write(*,format,advance='no') S(nghi,nghj,nghk)
-                   write(1,format,advance='no') S(nghi,nghj,nghk)
+                   write(*,format,advance='no') S(0,nghi,nghj,nghk)
+                   write(1,format,advance='no') S(0,nghi,nghj,nghk)
                end do
                write(*,*) ''
                write(1,*) ''

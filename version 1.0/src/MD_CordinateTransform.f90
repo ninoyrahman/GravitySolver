@@ -12,40 +12,40 @@ MODULE MD_CordinateTransform
 CONTAINS
 
     ! uniform cartesian coordinate
-    subroutine GetCartesianCordinate(i,j,k,x)
+    subroutine GetCartesianCordinate(i,j,k,xcord)
         implicit none
         integer, intent(in) :: i,j,k
-        real(kind=double), dimension(0:2), intent(out) :: x
+        real(kind=double), dimension(0:2), intent(out) :: xcord
 
-        x(0) = (i-imin + 0.5)*h - 0.5*inc*h
-        x(1) = (j-jmin + 0.5)*h - 0.5*jnc*h
-        x(2) = (k-kmin + 0.5)*h - 0.5*knc*h
+        xcord(0) = (dble(i-imin) + 0.5_rp)*h - 0.5_rp*dble(inc)*h
+        xcord(1) = (dble(j-jmin) + 0.5_rp)*h - 0.5_rp*dble(jnc)*h
+        xcord(2) = (dble(k-kmin) + 0.5_rp)*h - 0.5_rp*dble(knc)*h
 
     end subroutine GetCartesianCordinate
 
     ! nonuniformly scaled cartesian coordinate
-    subroutine NUSCCordinate(i,j,k,x)
+    subroutine NUSCCordinate(i,j,k,xcord)
         implicit none
         integer, intent(in) :: i,j,k
-        real(kind=double), dimension(0:2), intent(out) :: x
+        real(kind=double), dimension(0:2), intent(out) :: xcord
 
-        call GetCartesianCordinate(i,j,k,x)
-        x(0) = x(0)
-        x(1) = 2.0*x(1)
-        x(2) = 2.0*x(2)
+        call GetCartesianCordinate(i,j,k,xcord)
+        xcord(0) = xcord(0)
+        xcord(1) = 2.0_rp*xcord(1)
+        xcord(2) = 2.0_rp*xcord(2)
 
     end subroutine NUSCCordinate
 
 
-    subroutine GetCordinate(i,j,k,x)
+    subroutine GetCordinate(i,j,k,xcord)
         implicit none
         integer, intent(in) :: i,j,k
-        real(kind=double), dimension(0:2), intent(out) :: x
+        real(kind=double), dimension(0:2), intent(out) :: xcord
 
         if(coordinate .eq. 0) then
-            call GetCartesianCordinate(i,j,k,x)
+            call GetCartesianCordinate(i,j,k,xcord)
         else if(coordinate .eq. 1) then
-            call NUSCCordinate(i,j,k,x)
+            call NUSCCordinate(i,j,k,xcord)
         else
             print *, 'wrong coordinate'
         end if

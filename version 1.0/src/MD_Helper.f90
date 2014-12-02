@@ -38,7 +38,7 @@ CONTAINS
     integer function GetIndex(i,j,k)
         implicit none
         integer, intent(in) :: i,j,k
-        GetIndex = (k-kmin) + knc*(j-jmin) + knc*jnc*(i-imin)
+        GetIndex = (i-imin) + inc*(j-jmin) + inc*jnc*(k-kmin)
     end function GetIndex
 
     !***************************************************************

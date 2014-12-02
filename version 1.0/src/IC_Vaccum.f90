@@ -18,19 +18,19 @@ subroutine IC_Vaccum
     print *, '******************************'
     print *, ''
 
-    xc(0) = 0.0
-    xc(1) = 0.0
-    xc(2) = 0.0
-    M = 0.0
+    xc(0) = 0.0_rp
+    xc(1) = 0.0_rp
+    xc(2) = 0.0_rp
+    M = 0.0_rp
 
 
     ! looping over inner cell
     !$OMP PARALLEL PRIVATE(i,j,k)
     !$OMP DO SCHEDULE(STATIC) COLLAPSE(3)
-    do i = imin, imax
+    do k = kmin, kmax
         do j = jmin, jmax
-            do k = kmin, kmax
-                rho(i,j,k) = 0.0
+            do i = imin, imax
+                rho(i,j,k) = 0.0_rp
             end do
         end do
     end do

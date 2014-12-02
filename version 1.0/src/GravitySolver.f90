@@ -18,7 +18,7 @@ PROGRAM main
     if(test .eq. 0) then
         call Init
         call Solver(iteration)
-        call Output(0)
+        call Output_3D(0)
     else
         call RunTest
     end if

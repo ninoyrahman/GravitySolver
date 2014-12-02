@@ -12,6 +12,7 @@ subroutine IC_UniformDensity
     implicit none
 
     integer :: i,j,k
+    real(kind=double) :: c
 
     print *, ''
     print *, '***************************************'
@@ -19,18 +20,20 @@ subroutine IC_UniformDensity
     print *, '***************************************'
     print *, ''
 
-    xc(0) = 0.0
-    xc(1) = 0.0
-    xc(2) = 0.0
-    M = 0.0
+    xc(0) = 0.0_rp
+    xc(1) = 0.0_rp
+    xc(2) = 0.0_rp
+    M = 1.0_rp
+    R = 3.0_rp
+    c = (M/((4.0_rp/3.0_rp)*pi*R**3))
 
     ! looping over inner cell
     !$OMP PARALLEL PRIVATE(i,j,k)
-    !$OMP DO SCHEDULE(STATIC) COLLAPSE(3)
-    do i = imin, imax
+    !$OMP DO SCHEDULE(STATIC) REDUCTION(+:M) COLLAPSE(3)
+    do k = kmin, kmax
         do j = jmin, jmax
-            do k = kmin, kmax
-                rho(i,j,k) = 6.0/(4*pi*G)
+            do i = imin, imax
+                rho(i,j,k) = c
             end do
         end do
     end do

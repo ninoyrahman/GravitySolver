@@ -1,28 +1,25 @@
 EXED = build/
 SRCD = src/
+PETScD = /home/ninoy/libs/petsc-3.4.3
 
-FC = /home/ninoy/libs/petsc-3.4.3/arch-linux2-cxx-debug/bin/mpif90
-
-FFLAGS = -g -cpp -fPIC -fopenmp -mcmodel=large
-#FFLAGS = -g -cpp -fPIC -mcmodel=large
-
-INC_PATH = -I/home/ninoy/libs/petsc-3.4.3/include/ -I/home/ninoy/libs/petsc-3.4.3/arch-linux2-cxx-debug/include
-
-LIB_PATH = -L/home/ninoy/libs/petsc-3.4.3/arch-linux2-cxx-debug/lib -L/usr/lib/gcc/x86_64-linux-gnu/4.6 \
--L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8
-
-LIBS = -lpetsc -lf2clapack -lf2cblas -lX11 -lpthread -ldl -lopa -lmpl -lgcc_s -lstdc++ -lm \
--lmpichcxx -lmpich -lmpichf90 -lgfortran -lquadmath -lrt
-
+FC = mpif90.mpich2
+FFLAGS = -g -cpp -fPIC -fopenmp -mcmodel=large 
+#FFLAGS = -g -cpp -fPIC -mcmodel=large -pg
+INC_PATH = -I$(PETScD)/include/ -I$(PETScD)/arch-linux2-cxx-debug/include
+LIB_PATH = -L$(PETScD)/arch-linux2-cxx-debug/lib
+LIBS = -lpetsc
 EXECTBL=GravitySolver
 
-SRCS=MD_Definition.f90 MD_Parameter.f90 MD_CordinateTransform.f90 MD_GeometricQuantity.f90 MD_Quantity.f90 \
+SRCS=MD_Definition.f90 MD_Parameter.f90 MD_Quantity.f90 MD_GeometricQuantity.f90 \
+MD_CalculateCordinate.f90 MD_CordinateTransform.f90 \
 MD_IO.f90 MD_Helper.f90 MD_BoundaryCondition.f90 \
-Test_Indexing.f90 Test_BoundaryValue.f90 Test_Accuracy.f90 RunTest.f90 \
-ComputeTransverseGradient.f90 CalculateStencil.f90 ComputeMatrix.f90 \
+Test_Indexing.f90 Test_BoundaryValue.f90 Test_Accuracy.f90 Test_SolverConvergence.f90 RunTest.f90 \
 IC_Vaccum.f90 IC_UniformDensity.f90 IC_SinusoidalDensity.f90 IC_Poly6Density.f90 \
-IC_CentredSphere.f90 IC_OffCentredSphere.f90 Init.f90 \
-ComputeRHS.f90 Solver.f90 Output.f90 Finalize.f90 GravitySolver.f90 
+IC_CentredSphere.f90 IC_OffCentredGaussian.f90 IC_GaussianDensity.f90 IC_Ploytrop1.f90 IC_Ploytrop5.f90 \
+IC_CondensedSphere.f90 IC_OffCentredCondensed.f90 \
+ComputeTransverseGradient.f90 CalculateStencil.f90 ComputeMatrix.f90 \
+CalculateAvgDensity.f90 ComputeRHS.f90 Solver.f90 ComputePointValue.f90 \
+Init.f90 Output_1D.f90 Output_3D.f90 OutputError.f90 Finalize.f90 GravitySolver.f90 
 
 OBJS=$(SRCS:.f90=.o)
 
@@ -44,7 +41,7 @@ $(OBJS):%.o : $(SRCD)%.f90
 	@echo ''
 	mkdir -p build
 	mkdir -p data
-	$(FC) $(FFLAGS) $(INC_PATH) -c $< -o $(EXED)$@ $(LIB_PATH) $(LIBS) 
+	$(FC) $(FFLAGS) $(INC_PATH) -c $< -o $(EXED)$@
 
 move:
 	mv *.mod $(EXED)
@@ -53,4 +50,4 @@ clean:
 	rm -f $(BINOBJECTS) $(EXED)$(EXECTBL) $(EXED)*.mod
 
 flush: 
-	rm -f data/*.dat
+	rm -f data/*.dat data/*.vtk
